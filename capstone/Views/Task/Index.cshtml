@@ -1,0 +1,56 @@
+﻿@using Capstone.Models
+@model List<TaskItem>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TaskFlow</title>
+    <link rel="stylesheet" href="~/css/taskflow.css" />
+</head>
+<body>
+    <div class="sidebar">
+        <h2>TaskFlow</h2>
+        <nav>
+            <a href="#" class="active">Inbox</a>
+        </nav>
+        <div class="section-label">Account</div>
+        <nav>
+            <a href="/Account/Logout">Logout</a>
+        </nav>
+    </div>
+
+    <div class="main">
+        <h1>Inbox</h1>
+
+        <form action="/Task/Add" method="post" class="task-form">
+            <input type="text" name="title" placeholder="Add a task..." required />
+            <select name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <input type="datetime-local" name="dueDate" />
+            <button type="submit">Add</button>
+        </form>
+
+        <div class="task-list">
+            @foreach (var task in Model)
+            {
+                <div class="task-card">
+                    <div class="task-info">
+                        <h3>@task.Title</h3>
+                        <span>@task.DueDate.ToString("g")</span>
+                    </div>
+                    <div class="task-actions">
+                        <span class="badge @task.Priority.ToLower()">@task.Priority</span>
+                        <form action="/Task/Delete" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@task.Id" />
+                            <button type="submit" class="delete-btn">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
